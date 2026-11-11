@@ -53,7 +53,7 @@ Then:
 1. Open `http://localhost:8000/login.php` and sign in as `victim`.
 2. Open `http://localhost:8001/exploit.html` in the same browser.
 3. Click the free-iPhone button.
-4. Return to the dashboard and verify that `$5.00` was transferred to `attacker`.
+4. Return to the dashboard and verify that `$500.00` was transferred to `attacker`.
 
 The two ports make the pages different **origins**, while `localhost` keeps them in the same **site**, allowing the default `SameSite=Lax` cookie behavior used by this lab to be observed.
 
