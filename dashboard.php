@@ -51,11 +51,5 @@ $message = take_flash();
 
         <button type="submit">Send money</button>
     </form>
-
-    <div class="note">
-        <strong>Vulnerable by design.</strong> This form carries no anti-CSRF token, and
-        <code>transfer.php</code> accepts any POST that arrives with a valid session
-        cookie &mdash; it never asks which page caused the request.
-    </div>
 </body>
 </html>
