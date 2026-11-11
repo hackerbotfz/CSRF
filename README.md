@@ -13,7 +13,7 @@ The sample application, **Site A**, provides:
 - A dashboard with account balances
 - A money-transfer form handled by `transfer.php`
 
-The transfer form does not use a CSRF token and `transfer.php` accepts any POST request that includes a valid session cookie. `exploit.html` acts as **Site B**: its disguised button submits a cross-origin request that transfers `$5.00` from the signed-in victim to the attacker.
+The transfer form does not use a CSRF token and `transfer.php` accepts any POST request that includes a valid session cookie. `exploit.html` acts as **Site B**: its disguised button submits a cross-origin request that transfers `$500.00` from the signed-in victim to the attacker.
 
 ## Requirements
 
@@ -23,26 +23,22 @@ The transfer form does not use a CSRF token and `transfer.php` accepts any POST 
 
 ## Run the lab
 
-From the repository root, initialize the database:
+From the repository root, start Site A:
 
 ```bash
 php -S localhost:8000
 ```
 
-In another terminal, open:
-
-```text
-http://localhost:8000/setup.php
-```
-
-This creates `data/app.db` and seeds the following accounts:
+Then open `http://localhost:8000/setup.php` in a browser. This creates
+`data/app.db` and seeds the following accounts:
 
 | Username | Password | Initial balance |
 | --- | --- | ---: |
 | `victim` | `victim123` | `$1,000.00` |
 | `attacker` | `attacker123` | `$0.00` |
 
-Keep the Site A server running and start a second server on another port so the exploit page has a different origin:
+Keep the Site A server running and, from the same repository root, start a
+second server on another port so the exploit page has a different origin:
 
 ```bash
 php -S localhost:8001
@@ -52,8 +48,9 @@ Then:
 
 1. Open `http://localhost:8000/login.php` and sign in as `victim`.
 2. Open `http://localhost:8001/exploit.html` in the same browser.
-3. Click the free-iPhone button.
-4. Return to the dashboard and verify that `$500.00` was transferred to `attacker`.
+3. Click the free-iPhone button. The browser lands on Site A's dashboard,
+   which reports `Sent $500.00 to attacker` and shows the reduced balance.
+4. Optionally sign in as `attacker` to confirm the `$500.00` arrived.
 
 The two ports make the pages different **origins**, while `localhost` keeps them in the same **site**, allowing the default `SameSite=Lax` cookie behavior used by this lab to be observed.
 
@@ -63,13 +60,14 @@ Visit `http://localhost:8000/setup.php` again. It drops and recreates the `users
 
 ## Relevant files
 
-- `setup.php` — creates the SQLite database and seed accounts
-- `login.php` — authenticates users and creates the session
-- `dashboard.php` — displays the balance and transfer form
-- `transfer.php` — intentionally vulnerable state-changing endpoint
-- `exploit.html` — attacker-controlled cross-origin form
-- `bootstrap.php` — session and database initialization
-- `db.php` — SQLite connection and authentication helpers
+- `setup.php`: creates the SQLite database and seed accounts
+- `login.php`: authenticates users and creates the session
+- `dashboard.php`: displays the balance and transfer form
+- `transfer.php`: intentionally vulnerable state-changing endpoint
+- `exploit.html`: attacker-controlled cross-origin form (Site B)
+- `bootstrap.php`: session and database initialization
+- `db.php`: SQLite connection and authentication helpers
+- `style.css`: shared Site A stylesheet
 
 ## How to fix the vulnerability
 
