@@ -24,8 +24,8 @@ $pdo->exec(
 );
 
 $seed = [
-    ['victim',   'victim123',   100000], // $1,000.00
-    ['attacker', 'attacker123',      0], // $0.00
+    ['alice',   'alice123',   100000], // $1,000.00
+    ['bob', 'bob@123',      0], // $0.00
 ];
 
 $stmt = $pdo->prepare(
