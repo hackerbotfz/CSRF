@@ -24,8 +24,8 @@ $pdo->exec(
 );
 
 $seed = [
-    ['alice',   'alice123',   100000], // $1,000.00
-    ['bob', 'bob@123',      0], // $0.00
+    ['alice', 'alice123', 100000], // $1,000.00
+    ['bob',   'bob@123',  0],      // $0.00
 ];
 
 $stmt = $pdo->prepare(
@@ -41,7 +41,7 @@ $users = $pdo->query('SELECT username, balance_cents FROM users ORDER BY id')->f
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <title>Site A &middot; Setup</title>
     <style>
         body { font: 15px/1.6 system-ui, sans-serif; max-width: 34rem; margin: 4rem auto; padding: 0 1rem; color: #1c1c1e; }
@@ -69,7 +69,7 @@ $users = $pdo->query('SELECT username, balance_cents FROM users ORDER BY id')->f
         <?php foreach ($users as $u): ?>
             <tr>
                 <td><?= h($u['username']) ?></td>
-                <td><code><?= h($u['username'] === 'victim' ? 'victim123' : 'attacker123') ?></code></td>
+                <td><code><?= h($u['username'] === 'alice' ? 'alice123' : 'bob@123') ?></code></td>
                 <td><?= h(money((int) $u['balance_cents'])) ?></td>
             </tr>
         <?php endforeach; ?>
